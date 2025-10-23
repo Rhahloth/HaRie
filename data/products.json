@@ -86,6 +86,31 @@
       "in_stock": true,
       "description": "Long Sleeve cotton sweat shirt with round neck",
       "category": "men"
+    },
+    {
+      "discount": 15,
+      "badge": "Limited Stock",
+      "price": 50000,
+      "has_promo": true,
+      "name": "Black Bag",
+      "featured": true,
+      "id": "black-bag",
+      "image": "/assets/img/uploads/black-bag.png",
+      "in_stock": true,
+      "description": "Hand Bag",
+      "category": "bags"
+    },
+    {
+      "discount": 5,
+      "price": 40000,
+      "has_promo": false,
+      "name": "Black Heels Shoe",
+      "featured": false,
+      "id": "black-heels",
+      "image": "/assets/img/uploads/black-heels.png",
+      "in_stock": true,
+      "description": "Durable heels with cushioned soles for a comfy day. Stylish yet casual.",
+      "category": "shoes"
     }
   ]
 }
