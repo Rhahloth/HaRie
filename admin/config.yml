@@ -2,15 +2,13 @@ backend:
   name: proxy
   repo: Rhahloth/HaRie
   branch: main
-  proxy_url: https://harriecollection-oauth.raysokello.workers.dev
+  proxy_url: https://harriecollection-oauth.raysokello.workers.dev/api
   auth_endpoint: auth
 
 site_url: https://harriecollection.pages.dev
 media_folder: "assets/img/uploads"
 public_folder: "/assets/img/uploads"
 logo_url: "/assets/img/transparent-logo.png"
-
-publish_mode: editorial_workflow
 
 collections:
   - name: "products"
