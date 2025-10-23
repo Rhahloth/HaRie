@@ -98,7 +98,6 @@ body {
 /* =====================================
    PRODUCT GRID – HaRié Modern Style
    ===================================== */
-
 .section-title {
     font-size: 1.6rem;
     font-weight: 700;
@@ -146,16 +145,55 @@ body {
     padding: 1.2rem;
 }
 
+/* =====================================
+   PRODUCT CARD TEXT — Compact, Elegant
+   ===================================== */
 .product-card h5 {
-    font-weight: 700;
-    margin-bottom: 0.3rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
     color: var(--brand-dark);
+    font-size: 0.9rem;
+    /* smaller title */
+    line-height: 1.2;
 }
 
 .product-card p {
     color: var(--text-muted);
-    margin-bottom: 0;
-    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+    /* smaller category text */
+    letter-spacing: 0.3px;
+}
+
+.price-block {
+    font-size: 0.85rem;
+    /* smaller pricing */
+    margin-top: 0.2rem;
+}
+
+.old-price {
+    color: #888;
+    text-decoration: line-through;
+    font-size: 0.75rem;
+}
+
+.new-price {
+    color: var(--brand-accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-left: 4px;
+}
+
+/* Smaller text across all screens */
+@media (max-width: 768px) {
+    .product-card h5 {
+        font-size: 0.85rem;
+    }
+
+    .product-card p,
+    .price-block {
+        font-size: 0.75rem;
+    }
 }
 
 /* Hover Glow Effect */
@@ -166,7 +204,9 @@ body {
     /* gold accent on hover */
 }
 
-/* BUTTONS */
+/* =====================================
+   BUTTONS
+   ===================================== */
 .btn-dark {
     background-color: var(--brand-dark);
     border-color: var(--brand-dark);
@@ -179,7 +219,6 @@ body {
     color: #fff;
     transform: translateY(-3px);
 }
-
 /* =====================================
    HARIÉ FOOTER — Minimal Luxe
    ===================================== */
@@ -374,68 +413,151 @@ body.zoom-active {
     overflow: hidden;
 }
 
-/* PROMOTIONS */
+/* =====================================
+   PROMO & STOCK BADGES — Polished Layout
+   ===================================== */
+
+/* Promo badge: top-left */
 .promo-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(196, 155, 102, 0.6);
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #fdf7ed 0%, #f1e2c6 100%);
+    border: 1px solid rgba(211, 165, 100, 0.5);
     color: #3a2c1a;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.8px;
+    font-size: 0.65rem;
+    letter-spacing: 0.6px;
     text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 25px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    padding: 3px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s ease;
+    z-index: 3;
 }
 
 .promo-badge:hover {
-    background: rgba(196, 155, 102, 0.9);
+    background: linear-gradient(135deg, #d3a564 0%, #c19452 100%);
     color: #fff;
     border-color: transparent;
 }
 
+/* Color variants */
 .promo-badge.black-friday {
-    background: #111;
+    background: linear-gradient(135deg, #222, #000);
     color: #fff;
     border-color: #111;
 }
 
 .promo-badge.christmas {
-    background: #f2f2f2;
-    color: #9b6f3a;
-    border-color: #c49b66;
+    background: linear-gradient(135deg, #fff3e0, #ffd9b3);
+    color: #7b4a1a;
+    border-color: #e0b470;
 }
 
 .promo-badge.special {
-    background: rgba(240, 236, 229, 0.9);
+    background: linear-gradient(135deg, #f3f0ea, #e2d5bb);
     color: #5a4a2d;
 }
 
-.old-price {
-    color: #888;
-    text-decoration: line-through;
-    font-size: 0.9rem;
-}
-
-.new-price {
-    color: var(--brand-accent, #c49b66);
-    font-weight: 700;
-    font-size: 1rem;
-    margin-left: 6px;
-}
-
+/* Out-of-stock badge — lifted slightly above text area */
 .stock-badge {
-    font-size: 0.8rem;
-    z-index: 5;
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    z-index: 4;
+    display: inline-block;
+    background: linear-gradient(135deg, #e35d5d, #b93f3f);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 18px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    opacity: 0.95;
 }
 
-.product-card.opacity-50 {
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+/* Responsive adjustment */
+@media (max-width: 576px) {
+    .stock-badge {
+        font-size: 0.55rem;
+        padding: 2px 8px;
+        top: 30px;
+        left: 10px;
+    }
+}
+
+
+/* Responsive tweak for small screens */
+@media (max-width: 576px) {
+    .promo-badge {
+        font-size: 0.55rem;
+        padding: 2px 8px;
+        top: 8px;
+        left: 8px;
+    }
+}
+
+/* =====================================
+   RESPONSIVE PRODUCT GRID 
+   ===================================== */
+#homeProductGrid,
+#product-grid {
+    display: grid !important;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    justify-content: center;
+    align-items: start;
+    animation: fadeInGrid 0.6s ease forwards;
+}
+
+/* Tablets (≥768px): 4 columns */
+@media (min-width: 768px) {
+
+    #homeProductGrid,
+    #product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Desktops (≥1200px): 5 columns */
+@media (min-width: 1200px) {
+
+    #homeProductGrid,
+    #product-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Compact image height for small screens */
+@media (max-width: 576px) {
+    .product-card img {
+        height: 180px;
+        object-fit: cover;
+    }
+}
+
+/* Subtle fade-in for the product cards */
+@keyframes fadeInGrid {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Optional: make product cards pop on hover */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
 }

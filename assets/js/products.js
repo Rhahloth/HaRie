@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const homeGrid = document.querySelector(".row.g-4:not(#product-grid)");
+  const homeGrid = document.querySelector("#homeProductGrid");
   const shopGrid = document.querySelector("#product-grid");
   const isShop = !!shopGrid;
   const grid = isShop ? shopGrid : homeGrid;
@@ -44,13 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Stock visuals
         const outOfStockBadge = !inStock
-          ? `<span class="stock-badge bg-secondary text-white position-absolute top-0 end-0 m-2 px-2 py-1 rounded-3 small">Out of Stock</span>`
+          ? `<span class="stock-badge">Out of Stock</span>`
           : "";
         const stockDim = !inStock ? "opacity-50" : "";
 
         // Product card
         const card = `
-          <div class="col-md-4 position-relative" data-category="${p.category.toLowerCase()}">
+          <div class="col position-relative" data-category="${p.category.toLowerCase()}">
             <div class="product-card text-center position-relative ${stockDim}"
                  ${inStock ? `data-bs-toggle="modal" data-bs-target="#modal-${p.id}"` : ""}>
               ${badgeLabel ? `<span class="promo-badge ${customClass}">${badgeLabel}</span>` : ""}
