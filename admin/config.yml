@@ -1,9 +1,5 @@
 backend:
-  name: proxy
-  repo: Rhahloth/HaRie
-  branch: main
-  proxy_url: https://harriecollection-oauth.raysokello.workers.dev/api
-  auth_endpoint: auth
+  name: test-repo
 
 site_url: https://harriecollection.pages.dev
 media_folder: "assets/img/uploads"
@@ -30,20 +26,14 @@ collections:
                   label: "ID",
                   name: "id",
                   widget: "string",
-                  hint: "Unique lowercase identifier (e.g. women-dress-green)",
+                  hint: "Unique lowercase identifier",
                 }
               - { label: "Name", name: "name", widget: "string" }
               - {
                   label: "Category",
                   name: "category",
                   widget: "select",
-                  options:
-                    [
-                      { label: "Men", value: "men" },
-                      { label: "Women", value: "women" },
-                      { label: "Bags", value: "bags" },
-                      { label: "Shoes", value: "shoes" },
-                    ],
+                  options: ["men", "women", "bags", "shoes"],
                 }
               - { label: "Image", name: "image", widget: "image" }
               - {
@@ -55,7 +45,7 @@ collections:
                 }
               - { label: "Description", name: "description", widget: "text" }
               - {
-                  label: "Featured on Homepage",
+                  label: "Featured",
                   name: "featured",
                   widget: "boolean",
                   default: false,
@@ -71,6 +61,7 @@ collections:
                   name: "has_promo",
                   widget: "boolean",
                   default: false,
+                  required: false,
                 }
               - {
                   label: "Badge Label",
