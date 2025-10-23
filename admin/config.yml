@@ -3,10 +3,8 @@ backend:
   branch: main
 
 site_url: https://harieboutique.netlify.app
-
 media_folder: "assets/img/uploads"
 public_folder: "/assets/img/uploads"
-
 logo_url: "/assets/img/transparent-logo.png"
 
 collections:
@@ -25,66 +23,68 @@ collections:
             widget: "list"
             summary: "{{fields.name}} — {{fields.category}}"
             fields:
-              - label: "ID"
-                name: "id"
-                widget: "string"
-                hint: "Unique lowercase identifier (e.g. women-dress-green)"
-
-              - label: "Name"
-                name: "name"
-                widget: "string"
-
-              - label: "Category"
-                name: "category"
-                widget: "select"
-                options:
-                  - { label: "Men", value: "men" }
-                  - { label: "Women", value: "women" }
-                  - { label: "Bags", value: "bags" }
-                  - { label: "Shoes", value: "shoes" }
-
-              - label: "Image"
-                name: "image"
-                widget: "image"
-
-              - label: "Price (UGX)"
-                name: "price"
-                widget: "number"
-                value_type: "int"
-                min: 0
-
-              - label: "Description"
-                name: "description"
-                widget: "text"
-
-              - label: "Featured on Homepage"
-                name: "featured"
-                widget: "boolean"
-                default: false
-                hint: "Enable if this product should appear on the homepage grid."
-
-              - label: "In Stock"
-                name: "in_stock"
-                widget: "boolean"
-                default: true
-                hint: "Uncheck this to mark the product as Out of Stock."
-
-              - label: "Has Promotion"
-                name: "has_promo"
-                widget: "boolean"
-                default: false
-                hint: "Enable if this product has a discount or special badge."
-
-              - label: "Badge Label"
-                name: "badge"
-                widget: "string"
-                required: false
-                hint: "Example: Summer Offer, Christmas Deal, Limited Stock"
-
-              - label: "Discount (%)"
-                name: "discount"
-                widget: "number"
-                required: false
-                min: 0
-                max: 100
-                hint: "Enter a percentage discount (e.g. 20 for 20% off)"
+              - {
+                  label: "ID",
+                  name: "id",
+                  widget: "string",
+                  hint: "Unique lowercase identifier (e.g. women-dress-green)",
+                }
+              - { label: "Name", name: "name", widget: "string" }
+              - {
+                  label: "Category",
+                  name: "category",
+                  widget: "select",
+                  options:
+                    [
+                      { label: "Men", value: "men" },
+                      { label: "Women", value: "women" },
+                      { label: "Bags", value: "bags" },
+                      { label: "Shoes", value: "shoes" },
+                    ],
+                }
+              - { label: "Image", name: "image", widget: "image" }
+              - {
+                  label: "Price (UGX)",
+                  name: "price",
+                  widget: "number",
+                  value_type: "int",
+                  min: 0,
+                }
+              - { label: "Description", name: "description", widget: "text" }
+              - {
+                  label: "Featured on Homepage",
+                  name: "featured",
+                  widget: "boolean",
+                  default: false,
+                  hint: "Enable if this product should appear on the homepage grid.",
+                }
+              - {
+                  label: "In Stock",
+                  name: "in_stock",
+                  widget: "boolean",
+                  default: true,
+                  hint: "Uncheck this to mark the product as Out of Stock.",
+                }
+              - {
+                  label: "Has Promotion",
+                  name: "has_promo",
+                  widget: "boolean",
+                  default: false,
+                  hint: "Enable if this product has a discount or special badge.",
+                }
+              - {
+                  label: "Badge Label",
+                  name: "badge",
+                  widget: "string",
+                  required: false,
+                  hint: "Example: Summer Offer, Christmas Deal, Limited Stock",
+                }
+              - {
+                  label: "Discount (%)",
+                  name: "discount",
+                  widget: "number",
+                  required: false,
+                  min: 0,
+                  max: 100,
+                  hint: "Enter a percentage discount (e.g. 20 for 20% off)",
+                }
