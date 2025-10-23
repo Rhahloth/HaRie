@@ -31,7 +31,14 @@
       .warn {
         color: #ffaa00;
       }
+      .success {
+        color: #00ff80;
+      }
     </style>
+
+    <!-- Load scripts FIRST -->
+    <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="https://unpkg.com/netlify-cms-app@^3.0.0/dist/netlify-cms.js"></script>
 
     <script>
       window.CMS_MANUAL_INIT = true;
@@ -42,36 +49,58 @@
         entry.className = type;
         entry.textContent = msg;
         logBox().appendChild(entry);
-        console[type === "error" ? "error" : "log"](msg);
+        console[type === "error" ? "error" : type === "warn" ? "warn" : "log"](
+          msg
+        );
       };
 
-      // Wait for NetlifyCMS to be fully loaded
+      // Wait for everything to load
       window.addEventListener("load", async () => {
         log("📘 CMS page loaded, starting extended debug...");
 
-        // Check if NetlifyCMS is available
-        if (typeof window.NetlifyCmsApp === "undefined") {
-          log("❌ NetlifyCmsApp not found - check script loading", "error");
+        // Check what's available
+        log(`📦 window.jsyaml available: ${!!window.jsyaml}`);
+        log(`📦 window.NetlifyCmsApp available: ${!!window.NetlifyCmsApp}`);
+        log(`📦 window.CMS available: ${!!window.CMS}`);
+        log(`📦 window.netlifyCms available: ${!!window.netlifyCms}`);
+
+        // Try different possible CMS objects
+        let cms = window.NetlifyCmsApp || window.CMS || window.netlifyCms;
+
+        if (!cms) {
+          log("❌ No CMS object found. Available global objects:", "error");
+          Object.keys(window).forEach((key) => {
+            if (
+              key.toLowerCase().includes("cms") ||
+              key.toLowerCase().includes("netlify")
+            ) {
+              log(`   - ${key}: ${typeof window[key]}`);
+            }
+          });
           return;
         }
 
+        log(`✅ Using CMS object: ${cms.constructor.name}`, "success");
+
         const configPath = "admin/config.yml";
-        log(
-          `Attempting to fetch config from: ${window.location.origin}/${configPath}`
-        );
+        log(`🌐 Fetching config from: ${window.location.origin}/${configPath}`);
 
         try {
           const res = await fetch(configPath);
-          log(`🌐 Response status → ${res.status}`);
+          log(`📡 Response status → ${res.status}`);
           log(`📄 Content-Type → ${res.headers.get("content-type")}`);
 
           if (!res.ok) {
             log(`❌ Config fetch failed with status: ${res.status}`, "error");
+            log(
+              "💡 Make sure config.yml exists in /admin/ folder in your repository",
+              "warn"
+            );
             return;
           }
 
           const text = await res.text();
-          log("🧾 YAML preview (first 500 chars):\n" + text.slice(0, 500));
+          log("🧾 YAML preview (first 300 chars):\n" + text.slice(0, 300));
 
           if (!window.jsyaml) {
             log("⚠️ js-yaml library not loaded properly!", "warn");
@@ -81,7 +110,7 @@
           let config;
           try {
             config = window.jsyaml.load(text);
-            log("✅ YAML parsed successfully");
+            log("✅ YAML parsed successfully", "success");
           } catch (parseErr) {
             log(`❌ YAML parse error: ${parseErr.message}`, "error");
             return;
@@ -97,10 +126,10 @@
             log(`✅ Backend type: ${config.backend.name}`);
           }
 
-          // Initialize CMS with the config
+          // Initialize CMS
           try {
-            window.NetlifyCmsApp.init({ config });
-            log("🎉 CMS initialized successfully!");
+            cms.init({ config });
+            log("🎉 CMS initialized successfully!", "success");
           } catch (cmsErr) {
             log("❌ CMS initialization failed: " + cmsErr.message, "error");
           }
@@ -109,9 +138,6 @@
         }
       });
     </script>
-
-    <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-    <script src="https://unpkg.com/netlify-cms-app@^3.0.0/dist/netlify-cms.js"></script>
   </head>
 
   <body>
