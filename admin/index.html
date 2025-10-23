@@ -11,7 +11,7 @@
       }
       body {
         margin: 0;
-        padding: 0;
+        padding: 20px;
         min-height: 100vh;
       }
       #nc-root {
@@ -19,13 +19,20 @@
       }
     </style>
 
-    <!-- Load Decap CMS from primary CDN -->
+    <!-- Decap CMS -->
     <script src="https://unpkg.com/decap-cms@^3.8.4/dist/decap-cms.js"></script>
   </head>
 
   <body>
     <div id="nc-root"></div>
 
-    <!-- Remove the document.write fallback - it's causing the errors -->
+    <!-- CDN Fallback -->
+    <script>
+      if (typeof window.CMS === "undefined") {
+        document.write(
+          '<script src="https://cdn.jsdelivr.net/npm/decap-cms@^3.8.4/dist/decap-cms.js"><\/script>'
+        );
+      }
+    </script>
   </body>
 </html>
