@@ -1,8 +1,11 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: Rhahloth/HaRie
   branch: main
+  base_url: https://harriecollection-oauth.raysokello.workers.dev
+  auth_endpoint: /auth
 
-site_url: https://harieboutique.netlify.app
+site_url: https://harriecollection.pages.dev
 media_folder: "assets/img/uploads"
 public_folder: "/assets/img/uploads"
 logo_url: "/assets/img/transparent-logo.png"
@@ -56,28 +59,24 @@ collections:
                   name: "featured",
                   widget: "boolean",
                   default: false,
-                  hint: "Enable if this product should appear on the homepage grid.",
                 }
               - {
                   label: "In Stock",
                   name: "in_stock",
                   widget: "boolean",
                   default: true,
-                  hint: "Uncheck this to mark the product as Out of Stock.",
                 }
               - {
                   label: "Has Promotion",
                   name: "has_promo",
                   widget: "boolean",
                   default: false,
-                  hint: "Enable if this product has a discount or special badge.",
                 }
               - {
                   label: "Badge Label",
                   name: "badge",
                   widget: "string",
                   required: false,
-                  hint: "Example: Summer Offer, Christmas Deal, Limited Stock",
                 }
               - {
                   label: "Discount (%)",
@@ -86,5 +85,4 @@ collections:
                   required: false,
                   min: 0,
                   max: 100,
-                  hint: "Enter a percentage discount (e.g. 20 for 20% off)",
                 }
