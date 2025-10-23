@@ -46,7 +46,7 @@
 
     <!-- Libraries -->
     <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-    <script src="https://unpkg.com/netlify-cms-app@^3.0.0/dist/netlify-cms.js"></script>
+    <script src="https://unpkg.com/decap-cms-app@^3.0.0/dist/decap-cms.js"></script>
 
     <script>
       window.CMS_MANUAL_INIT = true;
@@ -65,36 +65,23 @@
       window.addEventListener("load", async () => {
         log("📘 CMS page loaded, starting extended debug...");
 
-        // Verify global CMS objects
-        log(`📦 window.NetlifyCmsApp: ${!!window.NetlifyCmsApp}`);
+        log(`📦 window.DecapCmsApp: ${!!window.DecapCmsApp}`);
         log(`📦 window.CMS: ${!!window.CMS}`);
-        log(`📦 window.netlifyCms: ${!!window.netlifyCms}`);
 
-        const cms = window.NetlifyCmsApp || window.CMS || window.netlifyCms;
+        const cms = window.DecapCmsApp || window.CMS;
         if (!cms) {
-          log("❌ No CMS object found in window scope", "error");
+          log("❌ CMS library not found in window scope", "error");
           return;
         }
 
         const configPath = "admin/config.yml";
-        log(`🌐 Fetching config from: ${window.location.origin}/${configPath}`);
-
         try {
           const res = await fetch(configPath);
-          log(`📡 Response status → ${res.status}`);
           if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
           const text = await res.text();
-          log("🧾 YAML preview:\n" + text.slice(0, 250));
-
-          if (!window.jsyaml) throw new Error("js-yaml not loaded");
           const config = window.jsyaml.load(text);
-          log("✅ YAML parsed successfully", "success");
-          log("✅ Parsed keys: " + Object.keys(config).join(", "));
-          log(`✅ Backend: ${config.backend.name}`, "success");
-
-          // ✅ Initialize CMS
           cms.init({ config });
-          log("🎉 CMS initialized successfully!", "success");
+          log("🎉 Decap CMS initialized successfully!", "success");
         } catch (err) {
           log("🔥 CMS load error: " + err.message, "error");
         }
