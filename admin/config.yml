@@ -2,7 +2,7 @@ backend:
   name: git-gateway
   branch: main
 
-site_url: https://hariecollection.netlify.app
+site_url: https://harieboutique.netlify.app
 
 media_folder: "assets/img/uploads"
 public_folder: "/assets/img/uploads"
