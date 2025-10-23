@@ -8,7 +8,7 @@
     <style>
       body {
         font-family: monospace;
-        padding: 1.5rem;
+        padding: 2rem;
         background: #0d1117;
         color: #c9d1d9;
       }
@@ -22,9 +22,8 @@
         padding: 1rem;
         border-radius: 8px;
         overflow-y: auto;
-        max-height: 40vh;
+        max-height: 80vh;
         border: 1px solid #30363d;
-        margin-bottom: 1rem;
       }
       .error {
         color: #ff5555;
@@ -35,20 +34,11 @@
       .success {
         color: #00ff80;
       }
-      #cms-root {
-        background: #fff;
-        color: #000;
-        height: 70vh;
-        border-radius: 6px;
-        overflow: hidden;
-      }
     </style>
 
-    <!-- Libraries -->
+    <!-- Load Decap CMS (formerly Netlify CMS) -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-
-    <!-- ✅ Correct CDN for Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.10/dist/decap-cms.js"></script>
 
     <script>
       window.CMS_MANUAL_INIT = true;
@@ -64,31 +54,91 @@
         );
       };
 
+      // Wait for everything to load
       window.addEventListener("load", async () => {
         log("📘 CMS page loaded, starting extended debug...");
 
+        // Check what's available - try both old and new names
+        log(`📦 window.jsyaml available: ${!!window.jsyaml}`);
+        log(`📦 window.DecapCmsApp available: ${!!window.DecapCmsApp}`);
         log(`📦 window.CMS available: ${!!window.CMS}`);
+        log(`📦 window.netlifyCms available: ${!!window.netlifyCms}`);
+        log(`📦 window.decapCms available: ${!!window.decapCms}`);
 
-        const cms = window.CMS;
+        // Try all possible CMS objects
+        let cms =
+          window.DecapCmsApp ||
+          window.CMS ||
+          window.netlifyCms ||
+          window.decapCms;
+
         if (!cms) {
-          log(
-            "❌ CMS library not found in window scope (check CDN load)",
-            "error"
-          );
+          log("❌ No CMS object found. Available global objects:", "error");
+          // List all global objects that might be related
+          Object.keys(window).forEach((key) => {
+            if (
+              key.toLowerCase().includes("cms") ||
+              key.toLowerCase().includes("netlify") ||
+              key.toLowerCase().includes("decap")
+            ) {
+              log(`   - ${key}: ${typeof window[key]}`);
+            }
+          });
           return;
         }
 
+        log(`✅ Using CMS object: ${cms.constructor.name}`, "success");
+
         const configPath = "admin/config.yml";
+        log(`🌐 Fetching config from: ${window.location.origin}/${configPath}`);
+
         try {
           const res = await fetch(configPath);
-          if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
+          log(`📡 Response status → ${res.status}`);
+          log(`📄 Content-Type → ${res.headers.get("content-type")}`);
+
+          if (!res.ok) {
+            log(`❌ Config fetch failed with status: ${res.status}`, "error");
+            log("💡 Make sure config.yml exists in /admin/ folder", "warn");
+            return;
+          }
+
           const text = await res.text();
-          const config = window.jsyaml.load(text);
-          log("✅ Config parsed successfully", "success");
-          cms.init({ config });
-          log("🎉 Decap CMS initialized successfully!", "success");
+          log("🧾 YAML preview (first 300 chars):\n" + text.slice(0, 300));
+
+          if (!window.jsyaml) {
+            log("⚠️ js-yaml library not loaded properly!", "warn");
+            return;
+          }
+
+          let config;
+          try {
+            config = window.jsyaml.load(text);
+            log("✅ YAML parsed successfully", "success");
+          } catch (parseErr) {
+            log(`❌ YAML parse error: ${parseErr.message}`, "error");
+            return;
+          }
+
+          if (!config || !config.backend) {
+            log(
+              "⚠️ Parsed config is missing 'backend' or top-level keys.",
+              "warn"
+            );
+          } else {
+            log("✅ Parsed config keys: " + Object.keys(config).join(", "));
+            log(`✅ Backend type: ${config.backend.name}`);
+          }
+
+          // Initialize CMS
+          try {
+            cms.init({ config });
+            log("🎉 CMS initialized successfully!", "success");
+          } catch (cmsErr) {
+            log("❌ CMS initialization failed: " + cmsErr.message, "error");
+          }
         } catch (err) {
-          log("🔥 CMS load error: " + err.message, "error");
+          log("🔥 Fatal CMS load error: " + err.message, "error");
         }
       });
     </script>
@@ -97,6 +147,5 @@
   <body>
     <h3>🧩 HaRié CMS Debug Console</h3>
     <div id="log">Loading...</div>
-    <div id="cms-root"></div>
   </body>
 </html>
