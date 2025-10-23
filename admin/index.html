@@ -3,149 +3,80 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HaRié CMS – Debug Mode</title>
+    <title>HaRié CMS</title>
+
+    <!-- Import Decap CMS from CDN as ES module -->
+    <script type="module">
+      import { default as CMS } from "https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js";
+
+      // Initialize the CMS once the DOM is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize with your config
+        CMS.init();
+
+        // Optional: Log success
+        console.log("🎉 Decap CMS initialized successfully!");
+      });
+    </script>
 
     <style>
       body {
-        font-family: monospace;
-        padding: 2rem;
-        background: #0d1117;
-        color: #c9d1d9;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
       }
-      h3 {
-        color: #58a6ff;
+
+      /* Loading indicator */
+      #loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        gap: 1rem;
       }
-      #log {
-        white-space: pre-wrap;
-        background: #161b22;
-        color: #00ff80;
-        padding: 1rem;
-        border-radius: 8px;
-        overflow-y: auto;
-        max-height: 80vh;
-        border: 1px solid #30363d;
+
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
       }
-      .error {
-        color: #ff5555;
-      }
-      .warn {
-        color: #ffaa00;
-      }
-      .success {
-        color: #00ff80;
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
+  </head>
+  <body>
+    <!-- Loading indicator -->
+    <div id="loading">
+      <div class="spinner"></div>
+      <div>Loading HaRié CMS...</div>
+    </div>
 
-    <!-- Load Decap CMS (formerly Netlify CMS) -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <!-- CMS will inject its interface here -->
+    <div id="nc-root"></div>
 
     <script>
-      window.CMS_MANUAL_INIT = true;
-
-      const logBox = () => document.getElementById("log");
-      const log = (msg, type = "info") => {
-        const entry = document.createElement("div");
-        entry.className = type;
-        entry.textContent = msg;
-        logBox().appendChild(entry);
-        console[type === "error" ? "error" : type === "warn" ? "warn" : "log"](
-          msg
-        );
-      };
-
-      // Wait for everything to load
-      window.addEventListener("load", async () => {
-        log("📘 CMS page loaded, starting extended debug...");
-
-        // Check what's available - try both old and new names
-        log(`📦 window.jsyaml available: ${!!window.jsyaml}`);
-        log(`📦 window.DecapCmsApp available: ${!!window.DecapCmsApp}`);
-        log(`📦 window.CMS available: ${!!window.CMS}`);
-        log(`📦 window.netlifyCms available: ${!!window.netlifyCms}`);
-        log(`📦 window.decapCms available: ${!!window.decapCms}`);
-
-        // Try all possible CMS objects
-        let cms =
-          window.DecapCmsApp ||
-          window.CMS ||
-          window.netlifyCms ||
-          window.decapCms;
-
-        if (!cms) {
-          log("❌ No CMS object found. Available global objects:", "error");
-          // List all global objects that might be related
-          Object.keys(window).forEach((key) => {
-            if (
-              key.toLowerCase().includes("cms") ||
-              key.toLowerCase().includes("netlify") ||
-              key.toLowerCase().includes("decap")
-            ) {
-              log(`   - ${key}: ${typeof window[key]}`);
-            }
-          });
-          return;
-        }
-
-        log(`✅ Using CMS object: ${cms.constructor.name}`, "success");
-
-        const configPath = "admin/config.yml";
-        log(`🌐 Fetching config from: ${window.location.origin}/${configPath}`);
-
-        try {
-          const res = await fetch(configPath);
-          log(`📡 Response status → ${res.status}`);
-          log(`📄 Content-Type → ${res.headers.get("content-type")}`);
-
-          if (!res.ok) {
-            log(`❌ Config fetch failed with status: ${res.status}`, "error");
-            log("💡 Make sure config.yml exists in /admin/ folder", "warn");
-            return;
-          }
-
-          const text = await res.text();
-          log("🧾 YAML preview (first 300 chars):\n" + text.slice(0, 300));
-
-          if (!window.jsyaml) {
-            log("⚠️ js-yaml library not loaded properly!", "warn");
-            return;
-          }
-
-          let config;
-          try {
-            config = window.jsyaml.load(text);
-            log("✅ YAML parsed successfully", "success");
-          } catch (parseErr) {
-            log(`❌ YAML parse error: ${parseErr.message}`, "error");
-            return;
-          }
-
-          if (!config || !config.backend) {
-            log(
-              "⚠️ Parsed config is missing 'backend' or top-level keys.",
-              "warn"
-            );
-          } else {
-            log("✅ Parsed config keys: " + Object.keys(config).join(", "));
-            log(`✅ Backend type: ${config.backend.name}`);
-          }
-
-          // Initialize CMS
-          try {
-            cms.init({ config });
-            log("🎉 CMS initialized successfully!", "success");
-          } catch (cmsErr) {
-            log("❌ CMS initialization failed: " + cmsErr.message, "error");
-          }
-        } catch (err) {
-          log("🔥 Fatal CMS load error: " + err.message, "error");
+      // Hide loading indicator when CMS loads
+      window.addEventListener("load", function () {
+        const loading = document.getElementById("loading");
+        if (loading) {
+          setTimeout(() => {
+            loading.style.display = "none";
+          }, 1000);
         }
       });
     </script>
-  </head>
-
-  <body>
-    <h3>🧩 HaRié CMS Debug Console</h3>
-    <div id="log">Loading...</div>
   </body>
 </html>
