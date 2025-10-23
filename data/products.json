@@ -1,17 +1,17 @@
 {
   "products": [
     {
-      "discount": 10,
+      "discount": 9,
       "badge": "Summer Offer",
-      "price": 35000,
+      "price": 50000,
       "has_promo": true,
       "name": "Summer Dress",
       "featured": true,
       "id": "dress-green",
       "image": "assets/img/women/women_dress_green.jpg",
-      "in_stock": false,
+      "in_stock": true,
       "description": "Light, breezy cotton dress perfect for sunny days. Available in S, M, L.",
-      "category": "Women"
+      "category": "women"
     },
     {
       "discount": 20,
@@ -19,10 +19,10 @@
       "price": 40000,
       "has_promo": false,
       "name": "Red Dress",
-      "featured": false,
+      "featured": true,
       "id": "dress-red",
       "image": "assets/img/women/women_dress_red.jpg",
-      "in_stock": true,
+      "in_stock": false,
       "description": "Elegant evening red dress with satin finish. Perfect for events and dinners.",
       "category": "Women"
     },
@@ -30,14 +30,14 @@
       "discount": 20,
       "badge": "20% OFF",
       "price": 25000,
-      "has_promo": false,
+      "has_promo": true,
       "name": "Classic Shirt",
       "featured": true,
       "id": "shirt",
       "image": "assets/img/men/men_shirt.jpg",
-      "in_stock": true,
+      "in_stock": false,
       "description": "Premium cotton shirt, ideal for office or smart-casual looks.",
-      "category": "Men"
+      "category": "men"
     },
     {
       "badge": "Limited Stock",
