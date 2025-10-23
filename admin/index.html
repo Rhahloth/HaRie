@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HaRié CMS – Debug Mode</title>
+
+    <style>
+      body {
+        font-family: monospace;
+        padding: 2rem;
+        background: #0d1117;
+        color: #c9d1d9;
+      }
+      h3 {
+        color: #58a6ff;
+      }
+      #log {
+        white-space: pre-wrap;
+        background: #161b22;
+        color: #00ff80;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-y: auto;
+        max-height: 80vh;
+        border: 1px solid #30363d;
+      }
+      .error {
+        color: #ff5555;
+      }
+      .warn {
+        color: #ffaa00;
+      }
+    </style>
+
+    <script>
+      window.CMS_MANUAL_INIT = true;
+
+      const logBox = () => document.getElementById("log");
+      const log = (msg, type = "info") => {
+        const entry = document.createElement("div");
+        entry.className = type;
+        entry.textContent = msg;
+        logBox().appendChild(entry);
+        console[type === "error" ? "error" : "log"](msg);
+      };
+
+      // Wait for NetlifyCMS to be fully loaded
+      window.addEventListener("load", async () => {
+        log("📘 CMS page loaded, starting extended debug...");
+
+        // Check if NetlifyCMS is available
+        if (typeof window.NetlifyCmsApp === "undefined") {
+          log("❌ NetlifyCmsApp not found - check script loading", "error");
+          return;
+        }
+
+        const configPath = "admin/config.yml";
+        log(
+          `Attempting to fetch config from: ${window.location.origin}/${configPath}`
+        );
+
+        try {
+          const res = await fetch(configPath);
+          log(`🌐 Response status → ${res.status}`);
+          log(`📄 Content-Type → ${res.headers.get("content-type")}`);
+
+          if (!res.ok) {
+            log(`❌ Config fetch failed with status: ${res.status}`, "error");
+            return;
+          }
+
+          const text = await res.text();
+          log("🧾 YAML preview (first 500 chars):\n" + text.slice(0, 500));
+
+          if (!window.jsyaml) {
+            log("⚠️ js-yaml library not loaded properly!", "warn");
+            return;
+          }
+
+          let config;
+          try {
+            config = window.jsyaml.load(text);
+            log("✅ YAML parsed successfully");
+          } catch (parseErr) {
+            log(`❌ YAML parse error: ${parseErr.message}`, "error");
+            return;
+          }
+
+          if (!config || !config.backend) {
+            log(
+              "⚠️ Parsed config is missing 'backend' or top-level keys.",
+              "warn"
+            );
+          } else {
+            log("✅ Parsed config keys: " + Object.keys(config).join(", "));
+            log(`✅ Backend type: ${config.backend.name}`);
+          }
+
+          // Initialize CMS with the config
+          try {
+            window.NetlifyCmsApp.init({ config });
+            log("🎉 CMS initialized successfully!");
+          } catch (cmsErr) {
+            log("❌ CMS initialization failed: " + cmsErr.message, "error");
+          }
+        } catch (err) {
+          log("🔥 Fatal CMS load error: " + err.message, "error");
+        }
+      });
+    </script>
+
+    <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="https://unpkg.com/netlify-cms-app@^3.0.0/dist/netlify-cms.js"></script>
+  </head>
+
+  <body>
+    <h3>🧩 HaRié CMS Debug Console</h3>
+    <div id="log">Loading...</div>
+  </body>
+</html>

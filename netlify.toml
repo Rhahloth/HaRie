@@ -1,0 +1,26 @@
+[build]
+  publish = "."
+  command = ""
+
+# Ensure admin files are properly served
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/admin/config.yml"
+  [headers.values]
+    Content-Type = "text/yaml"
+    Cache-Control = "no-cache"
+
+# Redirects to handle SPA routing
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

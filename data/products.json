@@ -1,0 +1,72 @@
+{
+  "products": [
+    {
+      "id": "dress-green",
+      "name": "Summer Dress",
+      "category": "Women",
+      "image": "assets/img/women/women_dress_green.jpg",
+      "price": 35000,
+      "description": "Light, breezy cotton dress perfect for sunny days. Available in S, M, L.",
+      "badge": "Summer Offer",
+      "discount": 10,
+      "featured": true,
+      "in_stock": true
+    },
+    {
+      "id": "dress-red",
+      "name": "Red Dress",
+      "category": "Women",
+      "image": "assets/img/women/women_dress_red.jpg",
+      "price": 40000,
+      "description": "Elegant evening red dress with satin finish. Perfect for events and dinners.",
+      "badge": "Christmas Deal",
+      "discount": 20,
+      "featured": true,
+      "in_stock": true
+    },
+    {
+      "id": "shirt",
+      "name": "Classic Shirt",
+      "category": "Men",
+      "image": "assets/img/men/men_shirt.jpg",
+      "price": 25000,
+      "description": "Premium cotton shirt, ideal for office or smart-casual looks.",
+      "badge": "20% OFF",
+      "discount": 20,
+      "featured": true,
+      "in_stock": true
+    },
+    {
+      "id": "heels-party",
+      "name": "Party Heels",
+      "category": "Shoes",
+      "image": "assets/img/shoes/women_shoes.jpg",
+      "price": 40000,
+      "description": "Durable sneakers with cushioned soles for all-day comfort. Stylish yet casual.",
+      "badge": "Limited Stock",
+      "featured": true,
+      "in_stock": false
+    },
+    {
+      "id": "bag-tote",
+      "name": "Leather Tote",
+      "category": "Bags",
+      "image": "assets/img/bags/bag_tote.jpg",
+      "price": 220000,
+      "description": "Premium handcrafted leather tote. Spacious, stylish, and built to last.",
+      "featured": true,
+      "in_stock": true
+    },
+    {
+      "id": "block-heels",
+      "name": "Block Heels",
+      "category": "Shoes",
+      "image": "assets/img/shoes/shoe_heels.jpg",
+      "price": 160000,
+      "description": "Comfortable mid-height heels with elegant finish. Perfect for formal wear.",
+      "badge": "Valentine’s Special",
+      "featured": true,
+      "in_stock": true
+    }
+  ]
+}
