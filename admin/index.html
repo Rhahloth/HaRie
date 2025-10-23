@@ -8,7 +8,7 @@
     <style>
       body {
         font-family: monospace;
-        padding: 2rem;
+        padding: 1.5rem;
         background: #0d1117;
         color: #c9d1d9;
       }
@@ -22,8 +22,9 @@
         padding: 1rem;
         border-radius: 8px;
         overflow-y: auto;
-        max-height: 80vh;
+        max-height: 40vh;
         border: 1px solid #30363d;
+        margin-bottom: 1rem;
       }
       .error {
         color: #ff5555;
@@ -34,9 +35,16 @@
       .success {
         color: #00ff80;
       }
+      #cms-root {
+        background: #fff;
+        color: #000;
+        height: 70vh;
+        border-radius: 6px;
+        overflow: hidden;
+      }
     </style>
 
-    <!-- Load scripts FIRST -->
+    <!-- Libraries -->
     <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="https://unpkg.com/netlify-cms-app@^3.0.0/dist/netlify-cms.js"></script>
 
@@ -54,33 +62,19 @@
         );
       };
 
-      // Wait for everything to load
       window.addEventListener("load", async () => {
         log("📘 CMS page loaded, starting extended debug...");
 
-        // Check what's available
-        log(`📦 window.jsyaml available: ${!!window.jsyaml}`);
-        log(`📦 window.NetlifyCmsApp available: ${!!window.NetlifyCmsApp}`);
-        log(`📦 window.CMS available: ${!!window.CMS}`);
-        log(`📦 window.netlifyCms available: ${!!window.netlifyCms}`);
+        // Verify global CMS objects
+        log(`📦 window.NetlifyCmsApp: ${!!window.NetlifyCmsApp}`);
+        log(`📦 window.CMS: ${!!window.CMS}`);
+        log(`📦 window.netlifyCms: ${!!window.netlifyCms}`);
 
-        // Try different possible CMS objects
-        let cms = window.NetlifyCmsApp || window.CMS || window.netlifyCms;
-
+        const cms = window.NetlifyCmsApp || window.CMS || window.netlifyCms;
         if (!cms) {
-          log("❌ No CMS object found. Available global objects:", "error");
-          Object.keys(window).forEach((key) => {
-            if (
-              key.toLowerCase().includes("cms") ||
-              key.toLowerCase().includes("netlify")
-            ) {
-              log(`   - ${key}: ${typeof window[key]}`);
-            }
-          });
+          log("❌ No CMS object found in window scope", "error");
           return;
         }
-
-        log(`✅ Using CMS object: ${cms.constructor.name}`, "success");
 
         const configPath = "admin/config.yml";
         log(`🌐 Fetching config from: ${window.location.origin}/${configPath}`);
@@ -88,53 +82,21 @@
         try {
           const res = await fetch(configPath);
           log(`📡 Response status → ${res.status}`);
-          log(`📄 Content-Type → ${res.headers.get("content-type")}`);
-
-          if (!res.ok) {
-            log(`❌ Config fetch failed with status: ${res.status}`, "error");
-            log(
-              "💡 Make sure config.yml exists in /admin/ folder in your repository",
-              "warn"
-            );
-            return;
-          }
-
+          if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
           const text = await res.text();
-          log("🧾 YAML preview (first 300 chars):\n" + text.slice(0, 300));
+          log("🧾 YAML preview:\n" + text.slice(0, 250));
 
-          if (!window.jsyaml) {
-            log("⚠️ js-yaml library not loaded properly!", "warn");
-            return;
-          }
+          if (!window.jsyaml) throw new Error("js-yaml not loaded");
+          const config = window.jsyaml.load(text);
+          log("✅ YAML parsed successfully", "success");
+          log("✅ Parsed keys: " + Object.keys(config).join(", "));
+          log(`✅ Backend: ${config.backend.name}`, "success");
 
-          let config;
-          try {
-            config = window.jsyaml.load(text);
-            log("✅ YAML parsed successfully", "success");
-          } catch (parseErr) {
-            log(`❌ YAML parse error: ${parseErr.message}`, "error");
-            return;
-          }
-
-          if (!config || !config.backend) {
-            log(
-              "⚠️ Parsed config is missing 'backend' or top-level keys.",
-              "warn"
-            );
-          } else {
-            log("✅ Parsed config keys: " + Object.keys(config).join(", "));
-            log(`✅ Backend type: ${config.backend.name}`);
-          }
-
-          // Initialize CMS
-          try {
-            cms.init({ config });
-            log("🎉 CMS initialized successfully!", "success");
-          } catch (cmsErr) {
-            log("❌ CMS initialization failed: " + cmsErr.message, "error");
-          }
+          // ✅ Initialize CMS
+          cms.init({ config });
+          log("🎉 CMS initialized successfully!", "success");
         } catch (err) {
-          log("🔥 Fatal CMS load error: " + err.message, "error");
+          log("🔥 CMS load error: " + err.message, "error");
         }
       });
     </script>
@@ -143,5 +105,8 @@
   <body>
     <h3>🧩 HaRié CMS Debug Console</h3>
     <div id="log">Loading...</div>
+
+    <!-- CMS root container -->
+    <div id="cms-root"></div>
   </body>
 </html>
