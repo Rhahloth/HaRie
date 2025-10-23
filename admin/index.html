@@ -46,7 +46,9 @@
 
     <!-- Libraries -->
     <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-    <script src="https://unpkg.com/decap-cms-app@^3.0.0/dist/decap-cms.js"></script>
+
+    <!-- ✅ Correct CDN for Decap CMS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.10/dist/decap-cms.js"></script>
 
     <script>
       window.CMS_MANUAL_INIT = true;
@@ -65,12 +67,14 @@
       window.addEventListener("load", async () => {
         log("📘 CMS page loaded, starting extended debug...");
 
-        log(`📦 window.DecapCmsApp: ${!!window.DecapCmsApp}`);
-        log(`📦 window.CMS: ${!!window.CMS}`);
+        log(`📦 window.CMS available: ${!!window.CMS}`);
 
-        const cms = window.DecapCmsApp || window.CMS;
+        const cms = window.CMS;
         if (!cms) {
-          log("❌ CMS library not found in window scope", "error");
+          log(
+            "❌ CMS library not found in window scope (check CDN load)",
+            "error"
+          );
           return;
         }
 
@@ -80,6 +84,7 @@
           if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
           const text = await res.text();
           const config = window.jsyaml.load(text);
+          log("✅ Config parsed successfully", "success");
           cms.init({ config });
           log("🎉 Decap CMS initialized successfully!", "success");
         } catch (err) {
@@ -92,8 +97,6 @@
   <body>
     <h3>🧩 HaRié CMS Debug Console</h3>
     <div id="log">Loading...</div>
-
-    <!-- CMS root container -->
     <div id="cms-root"></div>
   </body>
 </html>
