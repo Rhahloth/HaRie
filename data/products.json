@@ -46,46 +46,46 @@
       "name": "Party Heels",
       "featured": true,
       "id": "heels-party",
-      "image": "assets/img/shoes/women_shoes.jpg",
-      "in_stock": false,
+      "image": "/assets/img/uploads/teal-heels.png",
+      "in_stock": true,
       "description": "Durable sneakers with cushioned soles for all-day comfort. Stylish yet casual.",
       "category": "Shoes"
     },
     {
-      "price": 220000,
+      "price": 38000,
       "has_promo": false,
       "name": "Leather Tote",
       "featured": true,
       "id": "bag-tote",
-      "image": "assets/img/bags/bag_tote.jpg",
+      "image": "/assets/img/uploads/yellow-bag.png",
       "in_stock": true,
       "description": "Premium handcrafted leather tote. Spacious, stylish, and built to last.",
       "category": "Bags"
     },
     {
       "badge": "Valentine’s Special",
-      "price": 160000,
-      "has_promo": false,
-      "name": "Block Heels",
+      "price": 39000,
+      "has_promo": true,
+      "name": "Flower dash tote",
       "featured": true,
-      "id": "block-heels",
-      "image": "assets/img/shoes/shoe_heels.jpg",
+      "id": "bag-stripe-white",
+      "image": "/assets/img/uploads/white-strip.png",
       "in_stock": true,
-      "description": "Comfortable mid-height heels with elegant finish. Perfect for formal wear.",
-      "category": "Shoes"
+      "description": "Lightweight leather tote for your daily demands",
+      "category": "bags"
     },
     {
       "discount": 5,
       "badge": "Limited Stock",
       "price": 35000,
       "has_promo": false,
-      "name": "Black T-Shirt",
-      "featured": false,
-      "id": "black-dress",
-      "image": "/assets/img/uploads/black-tshirt.webp",
+      "name": "Black Open Shoes",
+      "featured": true,
+      "id": "black-ops",
+      "image": "/assets/img/uploads/black-open.png",
       "in_stock": true,
-      "description": "Long Sleeve cotton sweat shirt with round neck",
-      "category": "men"
+      "description": "Easy slip-on, instant style\nSize 39 and all sizes available",
+      "category": "shoes"
     },
     {
       "discount": 15,
@@ -111,6 +111,78 @@
       "in_stock": true,
       "description": "Durable heels with cushioned soles for a comfy day. Stylish yet casual.",
       "category": "shoes"
+    },
+    {
+      "price": 36000,
+      "has_promo": false,
+      "name": "Elegant Bag",
+      "featured": true,
+      "id": "sky-blue-bag",
+      "image": "/assets/img/uploads/blue-sky.png",
+      "in_stock": true,
+      "description": "Adjustable straps for perfect fit",
+      "category": "bags"
+    },
+    {
+      "badge": "FEW LEFT",
+      "price": 20000,
+      "has_promo": true,
+      "name": "Push Ins",
+      "featured": true,
+      "id": "berkinstock-style",
+      "image": "/assets/img/uploads/crafts.png",
+      "in_stock": true,
+      "description": "Freedom to move, style to shine",
+      "category": "shoes"
+    },
+    {
+      "price": 42500,
+      "has_promo": false,
+      "name": "Brown Leather Bag",
+      "featured": true,
+      "id": "Brown-leather",
+      "image": "/assets/img/uploads/maron-black-bottom.png",
+      "in_stock": true,
+      "description": "Compact luxury for formal occasions",
+      "category": "bags"
+    },
+    {
+      "discount": 5,
+      "price": 38000,
+      "has_promo": false,
+      "name": "Classic tote",
+      "featured": false,
+      "id": "classic-tote",
+      "image": "/assets/img/uploads/pink-bag-cream.png",
+      "in_stock": true,
+      "description": "Minimalist design, maximum impact. This is your go to for celebrations",
+      "category": "bags"
+    },
+    {
+      "discount": 18,
+      "badge": "FREE DELIVERY",
+      "price": 58000,
+      "has_promo": true,
+      "name": "Strap tote",
+      "featured": false,
+      "id": "every-day-handle",
+      "image": "/assets/img/uploads/pink-bag.png",
+      "in_stock": true,
+      "description": "Sleek design for glamorous events",
+      "category": "bags"
+    },
+    {
+      "discount": 20,
+      "badge": "SPECIAL OFFER",
+      "price": 64000,
+      "has_promo": true,
+      "name": "Red Stylist",
+      "featured": true,
+      "id": "red-style",
+      "image": "/assets/img/uploads/red-bag.png",
+      "in_stock": true,
+      "description": "Durable style for busy days",
+      "category": "bags"
     }
   ]
 }
