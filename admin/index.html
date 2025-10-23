@@ -5,19 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HaRié CMS</title>
 
-    <!-- Import Decap CMS from CDN as ES module -->
-    <script type="module">
-      import { default as CMS } from "https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js";
-
-      // Initialize the CMS once the DOM is loaded
-      document.addEventListener("DOMContentLoaded", function () {
-        // Initialize with your config
-        CMS.init();
-
-        // Optional: Log success
-        console.log("🎉 Decap CMS initialized successfully!");
-      });
-    </script>
+    <!-- Load Decap CMS the standard way -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
     <style>
       body {
@@ -55,6 +44,12 @@
           transform: rotate(360deg);
         }
       }
+
+      .error {
+        color: #d32f2f;
+        text-align: center;
+        padding: 2rem;
+      }
     </style>
   </head>
   <body>
@@ -64,19 +59,63 @@
       <div>Loading HaRié CMS...</div>
     </div>
 
+    <!-- Error message container -->
+    <div id="error" style="display: none" class="error"></div>
+
     <!-- CMS will inject its interface here -->
     <div id="nc-root"></div>
 
     <script>
-      // Hide loading indicator when CMS loads
+      // Wait for the CMS script to load and initialize
       window.addEventListener("load", function () {
-        const loading = document.getElementById("loading");
-        if (loading) {
-          setTimeout(() => {
-            loading.style.display = "none";
-          }, 1000);
+        console.log("Page loaded, checking for CMS...");
+
+        // Check for CMS in different possible global locations
+        const cms = window.CMS || window.DecapCms || window.decapCMS;
+
+        if (cms) {
+          console.log("✅ CMS found:", cms);
+          try {
+            // Initialize CMS
+            cms.init();
+            console.log("🎉 CMS initialized successfully!");
+
+            // Hide loading indicator after a delay
+            setTimeout(() => {
+              const loading = document.getElementById("loading");
+              if (loading) loading.style.display = "none";
+            }, 2000);
+          } catch (err) {
+            showError("CMS initialization failed: " + err.message);
+          }
+        } else {
+          showError(
+            "CMS library not loaded. Available globals: " +
+              Object.keys(window)
+                .filter((k) => k.includes("CMS") || k.includes("cms"))
+                .join(", ")
+          );
         }
       });
+
+      function showError(message) {
+        console.error("❌", message);
+        const loading = document.getElementById("loading");
+        const error = document.getElementById("error");
+
+        if (loading) loading.style.display = "none";
+        if (error) {
+          error.innerHTML = "<h2>CMS Loading Error</h2><p>" + message + "</p>";
+          error.style.display = "block";
+        }
+      }
+
+      // Fallback: if nothing works after 5 seconds, show error
+      setTimeout(() => {
+        if (document.getElementById("loading").style.display !== "none") {
+          showError("CMS failed to load within timeout period");
+        }
+      }, 5000);
     </script>
   </body>
 </html>
